@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with Synthia</title>
+    <style>
+        /* Existing styles with dark mode and smooth look applied */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #1e1e1e;
+            color: #f5f5f5;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #chat-container {
+            width: 100%;
+            max-width: 800px;
+            height: 85vh;
+            background: #2e2e2e;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            animation: fadeIn 1.2s ease-in-out;
+            z-index: 10;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        #new-chat-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #3498db;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        #new-chat-btn:hover {
+            background: #2980b9;
+            transform: scale(1.05);
+        }
+
+        #messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #1e1e1e;
+            border-bottom: 1px solid #333;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            word-wrap: break-word;
+            animation: messageIn 0.6s ease-in-out;
+        }
+
+        @keyframes messageIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.user {
+            align-items: flex-end;
+        }
+
+        .message.ai {
+            align-items: flex-start;
+        }
+
+        .message .name {
+            font-weight: 600;
+            color: #aaa;
+            margin-bottom: 5px;
+        }
+
+        .message .text {
+            background: #444;
+            padding: 12px;
+            border-radius: 10px;
+            max-width: 75%;
+            color: #e0e0e0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            font-size: 0.95rem;
+        }
+
+        .message.user .text {
+            background: #3498db;
+        }
+
+        #input-container {
+            display: flex;
+            padding: 15px;
+            background: #2e2e2e;
+            border-top: 1px solid #333;
+        }
+
+        #input-container input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #333;
+            border-radius: 8px 0 0 8px;
+            background: #1e1e1e;
+            color: #fff;
+            margin-right: 10px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        #input-container input:focus {
+            border-color: #3498db;
+        }
+
+        #input-container button {
+            padding: 12px 20px;
+            border: none;
+            background: #3498db;
+            color: #ffffff;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+            font-size: 1rem;
+        }
+
+        #input-container button:hover {
+            background: #2980b9;
+            transform: scale(1.05);
+        }
+
+        #typing-indicator {
+            font-style: italic;
+            color: #888;
+            padding: 10px;
+            display: none;
+        }
+
+        /* Scrollbar styling */
+        #messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #messages::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 10px;
+        }
+
+        #messages::-webkit-scrollbar-track {
+            background: #2e2e2e;
+        }
+
+        /* Particle background styling */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(52, 152, 219, 0.7);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: drift 10s infinite linear;
+        }
+
+        @keyframes drift {
+            from { transform: translateY(0) translateX(0); }
+            to { transform: translateY(-1000px) translateX(500px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div id="chat-container">
+        <button id="new-chat-btn">New Chat</button>
+        <div id="messages"></div>
+        <div id="typing-indicator">Synthia está digitando...</div>
+        <div id="input-container">
+            <input type="text" id="message-input" placeholder="Digite uma mensagem...">
+            <button id="send-button">Enviar</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to create particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.width = `${Math.random() * 5 + 2}px`;
+                particle.style.height = particle.style.width;
+                particle.style.top = `${Math.random() * 100}vh`;
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.animationDuration = `${Math.random() * 10 + 5}s`;
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        createParticles();
+
+        document.getElementById('send-button').addEventListener('click', async () => {
+            const input = document.getElementById('message-input');
+            const message = input.value;
+            if (!message) return;
+
+            const messagesContainer = document.getElementById('messages');
+
+            // Append user message to chat
+            const userMessage = document.createElement('div');
+            userMessage.className = 'message user';
+            userMessage.innerHTML = `
+                <div class="name">Você</div>
+                <div class="text">${message.replace(/\n/g, '<br>')}</div>
+            `;
+            messagesContainer.appendChild(userMessage);
+
+            input.value = '';
+
+            // Show typing indicator
+            const typingIndicator = document.getElementById('typing-indicator');
+            typingIndicator.style.display = 'block';
+
+            // Send message to backend
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message })
+            });
+
+            const data = await response.json();
+
+            // Hide typing indicator
+            typingIndicator.style.display = 'none';
+
+            // Append AI response to chat
+            const aiMessage = document.createElement('div');
+            aiMessage.className = 'message ai';
+            aiMessage.innerHTML = `
+                <div class="name">Synthia</div>
+                <div class="text">${data.response}</div>
+            `;
+            messagesContainer.appendChild(aiMessage);
+
+            // Scroll to bottom of the messages container
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        });
+
+        // New chat button functionality
+        document.getElementById('new-chat-btn').addEventListener('click', () => {
+            document.getElementById('messages').innerHTML = '';
+        });
+    </script>
+</body>
+</html>

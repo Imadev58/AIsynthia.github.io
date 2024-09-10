@@ -1,0 +1,263 @@
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synthia AI - Created by Accident</title>
+    <style>
+        /* Default Light Theme */
+        :root {
+            --bg-light: #f4f4f4;
+            --text-light: #333;
+            --header-bg-light: #282c34;
+            --header-text-light: #fff;
+            --cta-bg-light: #61dafb;
+            --cta-text-light: #fff;
+            --cta-hover-bg-light: #21a1f1;
+            --section-bg-light: #fff;
+            --feature-bg-light: #fff;
+            --feature-text-light: #555;
+            --footer-bg-light: #282c34;
+            --footer-text-light: #fff;
+            --footer-link-light: #61dafb;
+
+            /* Default Dark Theme */
+            --bg-dark: #1e1e1e;
+            --text-dark: #ccc;
+            --header-bg-dark: #333;
+            --header-text-dark: #eee;
+            --cta-bg-dark: #4a90e2;
+            --cta-text-dark: #fff;
+            --cta-hover-bg-dark: #357ABD;
+            --section-bg-dark: #2a2a2a;
+            --feature-bg-dark: #3a3a3a;
+            --feature-text-dark: #ddd;
+            --footer-bg-dark: #333;
+            --footer-text-dark: #eee;
+            --footer-link-dark: #4a90e2;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        header {
+            background-color: var(--header-bg-light);
+            color: var(--header-text-light);
+            padding: 60px 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--cta-bg-light);
+            position: relative;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 4em;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            font-size: 1.6em;
+            margin: 10px 0;
+        }
+
+        .cta-button {
+            background-color: var(--cta-bg-light);
+            color: var(--cta-text-light);
+            padding: 15px 30px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.3em;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            background-color: var(--cta-hover-bg-light);
+        }
+
+        .about, .features, .testimonials {
+            padding: 60px 20px;
+            background-color: var(--section-bg-light);
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            margin: 20px auto;
+            border-radius: 15px;
+            max-width: 1200px;
+        }
+
+        .feature {
+            width: 30%;
+            background-color: var(--feature-bg-light);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 10px;
+            display: inline-block;
+        }
+
+        .feature:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature h3 {
+            font-size: 2em;
+            margin-bottom: 15px;
+            color: var(--text-light);
+        }
+
+        .feature p {
+            font-size: 1.1em;
+            color: var(--feature-text-light);
+        }
+
+        .testimonials {
+            background-color: var(--section-bg-light);
+        }
+
+        .testimonials h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: var(--text-light);
+        }
+
+        .testimonial {
+            font-style: italic;
+            margin-bottom: 20px;
+            color: var(--feature-text-light);
+        }
+
+        footer {
+            background-color: var(--footer-bg-light);
+            color: var(--footer-text-light);
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        footer a {
+            color: var(--footer-link-light);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: var(--cta-bg-light);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .theme-toggle.sun::before {
+            content: '\2600'; /* Sun Unicode Character */
+            font-size: 2.5em;
+            color: var(--text-light);
+        }
+
+        .theme-toggle.moon::before {
+            content: '\263D'; /* Moon Unicode Character */
+            font-size: 2.5em;
+            color: var(--text-light);
+        }
+
+        .theme-toggle.dark {
+            background-color: var(--header-bg-dark);
+        }
+
+        .theme-toggle.dark::before {
+            content: '\263D'; /* Moon Unicode Character */
+            color: var(--text-dark);
+        }
+
+        .theme-toggle.light {
+            background-color: var(--cta-bg-light);
+        }
+
+        .theme-toggle.light::before {
+            content: '\2600'; /* Sun Unicode Character */
+            color: var(--text-light);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Synthia AI</h1>
+        <p>The AI that was never supposed to happen.</p>
+        <a href="aichat.html" class="cta-button">Try It Now</a>
+    </header>
+
+    <section class="about">
+        <h2>About Synthia</h2>
+        <p>Synthia was created by accident. No prior experience with artificial intelligence, no research, just a spark of curiosity. And from that spark, something extraordinary emerged. Synthia is a testament to the power of exploration and the unexpected beauty of creation. It's a reminder that even the most unconventional paths can lead to incredible destinations. So, buckle up and get ready for a wild ride with Synthia, the AI that defies all expectations.</p>
+    </section>
+
+    <section class="features">
+        <div class="feature">
+            <h3>Generate Code</h3>
+            <p>Synthia can help you write code.</p>
+        </div>
+        <div class="feature">
+            <h3>Talk to You</h3>
+            <p>Have a chat with Synthia and be amazed at how much she can understand.</p>
+        </div>
+        <div class="feature">
+            <h3>Future Features</h3>
+            <p>Coming soon: Synthia might even be able to generate images!</p>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <h2>What People Are Saying (DISCORD)</h2>
+        <p class="testimonial">"Not going to lie, it's pretty good for something made by the guy who doesn't even know shit about AI." - Jordan/Wes</p>
+        <p class="testimonial">"Yeah, that's pretty cool. It's awesome. It can generate code. It can do a lot of stuff." - Wesley</p>
+        <p class="testimonial">"Oh yeah, pretty cool and it has its own guidelines I guess plus it's not that easy to bypass / jailbreak" - Dusk</p>
+        <p class="testimonial">"ngl its better then chatgpt. Synthia AI is an incredibly helpful assistant and is a lot better than chatgpt but yeah just use that." - 1995</p>
+        <p class="testimonial">"7/10 because she's kinda slow to actually answer something if it isn't because of that it was a 10/10(I know that hes still training it btw 😭)" - disneyritozx</p>
+        <p class="testimonial">"Overall, it's nice—I'd give it a 7 out of 10." - mighty113wax</p>
+        <p class="testimonial">"The ai is so good but needs a bit of improvement if there was a rating I would’ve given 4.5 stars but good job its a very good bot ✨👍👍" - · Amethyst</p>
+        <p class="testimonial">"Imagine if your pet could give you life advice. That's this AI, but with fewer furballs." - QuantumKitten</p>
+        <p class="testimonial">"It's good, but it's like that one friend who always gets your name wrong—still lovable though." - BoredPanda42</p>
+        <p class="testimonial">"Pretty solid performance. The AI does a good job with context, though there's room for improvement in handling complex queries." - Leo</p>
+        <p class="testimonial">"I once asked it for a joke, and it gave me a dad joke. 10/10 for commitment to the bit!" - fu*koff</p>
+        <p class="testimonial">"This AI is like the Swiss Army knife of virtual assistants—just a little rusty around the edges." - GadgetGuru</p>
+        <p class="testimonial">"I like the AI's ability to generate creative ideas. It has its quirks, but overall it's quite effective." - Caseylmao</p>
+        <p class="testimonial">"It’s like having a caffeinated friend who’s great at answering questions but occasionally forgets your name." - JavaJunkie</p>
+        <p class="testimonial">"The AI is decent. Sometimes it needs a little nudge to get it right, but it's getting better with every update." - Quinnfag</p>
+        <p class="testimonial">"Impressive for a new AI. It's clear that there's a lot of potential, though there are still a few bugs to work out." - Jamie</p>
+        <p class="testimonial">"If this AI were a superhero, its power would be ‘almost right answers’—still pretty cool though!" - nig***failed</p>
+        <p class="testimonial">"I appreciate the effort, and it shows. The AI's responses are getting more nuanced, which is great." - Riley</p>
+        <p class="testimonial">"Good stuff overall. It's not perfect, but it's making great strides. Looking forward to seeing how it evolves." - Taylor</p>
+
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Synthia AI. All rights reserved. | <a href="#">Contact Us</a> | <a href="#">Blog</a></p>
+    </footer>
+
+</html>
